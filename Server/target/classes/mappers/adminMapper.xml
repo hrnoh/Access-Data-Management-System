@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.myhome.ADMS.mapper.AdminMapper">
+
+	<select id="readPwd" resultType="AdminVO">
+		SELECT * FROM admin WHERE pwd LIKE sha1(#{pwd})
+	</select>
+	
+	<update id="updatePwd">
+		UPDATE admin SET pwd=sha(#{newPwd}) WHERE id LIKE 'admin';
+	</update>
+	
+	<select id="read" resultType="AdminVO">
+		SELECT * FROM admin WHERE id like 'admin';
+	</select>
+	
+	<update id="updateInfo">
+		UPDATE admin SET
+			name=#{name},
+		    sex=#{sex},
+		    age=#{age},
+		    email=#{email},
+		    phoneNum=#{phoneNum},
+		    originalFileName=#{originalFileName},
+		    storedFolderName=#{storedFolderName},
+		    storedFileName=#{storedFileName}
+		WHERE id LIKE 'admin';
+	</update>
+</mapper>

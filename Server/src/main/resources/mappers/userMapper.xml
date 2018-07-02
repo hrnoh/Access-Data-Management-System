@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.myhome.ADMS.mapper.UserMapper">
+
+	<insert id="create">
+		INSERT INTO user(name, sex, age, email, phoneNum, originalFileName, storedFolderName, storedFileName)
+		VALUES (#{name}, #{sex}, #{age}, #{email}, #{phoneNum}, #{originalFileName}, #{storedFolderName}, #{storedFileName})
+	</insert>
+	
+	<select id="read" resultType="UserVO">
+		SELECT * FROM user WHERE uno=#{uno}
+	</select>
+	
+	<update id="update">
+		UPDATE user SET
+			name=#{name},
+		    sex=#{sex},
+		    age=#{age},
+		    email=#{email},
+		    phoneNum=#{phoneNum},
+		    originalFileName=#{originalFileName},
+		    storedFolderName=#{storedFolderName},
+		    storedFileName=#{storedFileName}
+		WHERE uno=#{uno}
+	</update>
+	
+	<delete id="delete">
+		DELETE FROM user WHERE uno=#{uno}
+	</delete>
+	
+	<select id="list" resultType="UserVO">
+		SELECT * FROM user
+		WHERE uno>0
+		<if test="type != null">
+			<if test="type == 'n'.toString()">
+				AND name LIKE CONCAT('%', #{keyword}, '%')
+			</if>
+			<if test="type == 'p'.toString()">
+				AND phoneNum LIKE CONCAT('%', #{keyword}, '%')
+			</if>
+			<if test="type == 'e'.toString()">
+				AND email LIKE CONCAT('%', #{keyword}, '%')
+			</if>
+		</if>
+		ORDER BY uno desc
+		LIMIT #{startNum}, #{perPageNum};
+	</select>
+	
+	<select id="readForAccess" resultType="UserVO">
+		SELECT uno, accessKey, storedFolderName, storedFileName, pictureEncoding FROM user
+		WHERE accessKey like #{accessKey};
+	</select>
+	
+	<update id="updateFaceEnc">
+		UPDATE user SET
+			pictureEncoding=#{encoding}
+		WHERE uno=#{uno};
+	</update>
+</mapper>

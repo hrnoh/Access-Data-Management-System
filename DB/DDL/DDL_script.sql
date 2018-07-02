@@ -40,8 +40,8 @@ CREATE TABLE IF NOT EXISTS user (
 CREATE TABLE IF NOT EXISTS doorlock (
 	mac VARCHAR(20) NOT NULL,
     location VARCHAR(50) NOT NULL,
-    lastConTime TIMESTAMP NOT NULL DEFAULT now(),
-    isConnected TINYINT NOT NULL DEFAULT 0,
+    lastConTime TIMESTAMP,
+    isConnected BIT NOT NULL DEFAULT 0,
     PRIMARY KEY(mac)
 );
 
@@ -51,15 +51,15 @@ CREATE TABLE IF NOT EXISTS log (
     name VARCHAR(50) NOT NULL,
     location VARCHAR(50) NOT NULL,
     accessTime TIMESTAMP NOT NULL DEFAULT now(),
-    isSuccess TINYINT NOT NULL,
+    isSuccess BIT NOT NULL,
     storedFolderName VARCHAR(260) NOT NULL,
     storedFileName VARCHAR(36) NOT NULL,
     distance DOUBLE DEFAULT NULL,
     uno INT NOT NULL,
     mac VARCHAR(20) NOT NULL,
     PRIMARY KEY(lno),
-    FOREIGN KEY(uno) REFERENCES user(uno),
-    FOREIGN KEY(mac) REFERENCES doorlock(mac)
+    FOREIGN KEY(uno) REFERENCES user(uno) ON DELETE CASCADE,
+    FOREIGN KEY(mac) REFERENCES doorlock(mac) ON DELETE CASCADE
 );
 
 -- 접근 키 발행 트리거

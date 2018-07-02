@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.myhome.ADMS.mapper.DoorlockMapper">
+
+	<insert id="create">
+		INSERT INTO doorlock(mac, location)
+		VALUES (#{mac}, #{location})
+	</insert>
+	
+	<select id="read" resultType="DoorlockVO">
+		SELECT * FROM doorlock WHERE mac LIKE #{mac}
+	</select>
+	
+	<update id="update">
+		UPDATE doorlock SET location=#{location}
+		WHERE mac like #{mac}
+	</update>
+	
+	<delete id="delete">
+		DELETE FROM doorlock WHERE mac LIKE #{mac}
+	</delete>
+	
+	<select id="list" resultType="DoorlockVO">
+		SELECT * FROM doorlock
+		WHERE location LIKE CONCAT('%', #{location}, '%')
+		ORDER BY isConnected desc, lastConTime desc, location desc
+		LIMIT #{startNum}, #{perPageNum}
+	</select>
+	
+	<update id="updateConnectionState">
+		UPDATE doorlock SET isConnected=#{isConn}
+		WHERE mac LIKE #{mac};
+	</update>
+	
+	<update id="updateLastConTime">
+		UPDATE doorlock SET lastConTime = now()
+		WHERE mac LIKE #{mac};
+	</update>
+</mapper>
